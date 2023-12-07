@@ -1,0 +1,173 @@
+/* This file is common accross most pages of this website. 
+ * It contains basic CSS for all pages and css 
+ * for things like the header and footer which are common across all pages.
+ * Website colour scheme from https://99designs.com/blog/tips/website-color-schemes/
+ */
+
+:root {
+    --main: #479fa5;
+    --main2: #908d8d;
+    --secondary: #ffffff;
+    --income: rgb(0, 0, 0);
+    --expense: rgb(0, 0, 0);
+    --accent-blue: #1b4d89;
+}
+ 
+body {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 18px;
+    background-color: var(--main);
+    
+    padding-bottom: 250px;
+    color: var(--secondary);
+}
+
+.main-column {
+    display: grid;
+    
+    margin-left: auto;
+    margin-right: auto;
+    /* max-width: 1000px; */
+    background-color: var(--main);
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+
+
+h1 {
+    
+    margin: 20px;
+    margin-left: 1em;
+}
+
+header a {
+    align-items: center;
+    display: inherit;
+}
+
+header img {
+    width: 64px;
+    height: 64px;
+    margin-right: 20px;
+}
+
+ 
+/* Nav bar */
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    
+    z-index: 9;
+    border-bottom: 2px solid var(--accent-blue);
+}
+
+nav > * {    
+    flex-grow: 1;
+}
+
+nav a {
+    background-color: var(--main);
+    
+    text-decoration: none;
+    color: var(--secondary);
+    text-align: center;
+    padding: 0.35em;
+    
+    font-size: 28px;
+    font-weight: 650;
+    
+    
+}
+
+nav a:hover:not(.active) {
+    background-color: var(--accent-blue);
+    transition: 0.65s;
+}
+
+.active {
+    background-color: var(--accent-blue) !important;
+}
+
+/* Dropdown */
+.dropdown {
+    display: grid;
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    
+    position: absolute;
+    top: 100%;
+    
+    background-color: var(--main);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    width: 100%;
+}
+
+.dropdown-content > a {
+    padding: 0.35em 1em;
+    border-top-style: solid;
+    border-top-width: 2px;
+    border-color: var(--accent-blue);
+}
+
+
+
+.dropdown:hover .dropdown-content {
+    display: grid;
+}
+/* End Dropdown */
+
+/* End Nav Bar */
+
+.content {
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table form {
+    height: 100%;
+    min-width: 80px;
+}
+
+table input[type="submit"] {
+    background-color: var(--accent-blue);
+    color: var(--secondary);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--secondary)
+}
+
+td, th {
+    border-top: 2px solid var(--secondary);
+    border-bottom: 2px solid var(--secondary);
+    height: 50px;
+    min-width: 60px;
+    text-align: center;
+    padding: 0;
+}
+
+.Income {
+    color: var(--income)
+}
+
+.Expense {
+    color: var(--expense)
+}

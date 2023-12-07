@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+    <link href="{{ url_for('static', filename='index.css') }}" type="text/css" rel="stylesheet">
+
+    <h1>Stock</h1>
+    <input type="text" class="searchbox" placeholder="Search..."/>
+    <table class="items-table">
+        <tr>
+            <th>Add</th>
+            <form action="" method="post" name="sort_model">
+            {{ headers.csrf_token }}
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+            </form>
+        </tr>
+        <form action="" method="post" name="select_items">
+        {% for item in allItems %}
+            <tr>
+                {% if form_type == "checkbox" %}
+                    <td><input type="checkbox" value="{{ item.id }}" name="{{ item.id }}"
+                        {% for id in already_selected %}
+                            {{ 'checked' if item.id==id }}
+                        {% endfor %}
+                        ></td>
+                {% else %}
+                    <td><input type="radio" value="{{ item.id }}" name="radio_input" {{ 'checked' if item.id==already_selected }}></td>
+                {% endif %}
+            {% for column in item.data() %}
+                <td>{{ column }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+
+    </table>
+    <input type="submit" value="Confirm">
+    </form>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+    
+            
+{% endblock %}
+

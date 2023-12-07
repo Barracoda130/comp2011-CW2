@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+    <link href="{{ url_for('static', filename='index.css') }}" type="text/css" rel="stylesheet">
+
+    <h1>{{ title }}</h1>
+    <input type="text" class="searchbox" placeholder="Search..."/>
+    <table class="items-table">
+        <tr>
+            <form action="" method="post" name="sort_model">
+            {{ headers.csrf_token }}
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+            <td colspan="2" class="top_row"></td>
+            </form>
+        </tr>
+
+        {% for item in allItems %}
+            <tr>
+            {% for column in item.data() %}
+                <td>{{ column }}</td>
+            {% endfor %}
+            <td><form method="post"><input class="edit" type=submit name="edit_{{ item.id }}" value="Edit">
+            <td><form method="post"><input class="delete" type=submit name="delete_{{ item.id }}" value="Delete">
+            </tr>
+        {% endfor %}
+
+    </table>
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+    
+            
+{% endblock %}
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>        
+        <!-- Metadata -->
+        <meta charset="utf-8">
+        <meta name="description" content="{{ page_description }}">
+        <meta name="keywords" content="Budget, Tracker, Expenses">
+        <meta name="author" content="Luke Compton-Burnett">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Stylesheets -->
+        <link href="{{ url_for('static', filename='generic.css') }}" type="text/css" rel="stylesheet">
+        
+        <title>{{ title }}</title>
+    </head>
+    
+    <body>
+        <div class="main-column">
+            <!-- Nav bar to navigate to different pages -->
+            <nav>
+                <div class="dropdown">
+                    <a class="{{ 'active' if active_page == 'view' }}" class="dropdown-button" href="">View</a>
+                    <div class="dropdown-content">
+                        <a href="/view/stock">Stock</a>
+                        <a href="/view/kit">Kits</a>
+                        <a href="/view/course">Courses</a>
+                        <a href="/view/event">Events</a>
+                    </div>
+                </div> 
+                <div class="dropdown">
+                    <a class="{{ 'active' if active_page == 'add' }}" class="dropdown-button" href="">Add</a>
+                    <div class="dropdown-content">
+                        <a href="/add_stock">Stock Item</a>
+                        <a href="/add_kit">Kit</a>
+                        <a href="/add_course">Course</a>
+                        <a href="/add_event">Event</a>
+                    </div>
+                </div> 
+                <a class="{{ 'active' if active_page == 'add_user' }}" href="/add_user">Add User</a>
+            </nav>
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>
