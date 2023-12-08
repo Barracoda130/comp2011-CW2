@@ -6,7 +6,7 @@ import app.calculate_stock as calculate_stock
 
 class SortStockItemForm(FlaskForm):
     """
-    Form for sorting the finances page.
+    Form for sorting stock items.
     """
     name = SubmitField('Name')
     stock = SubmitField('Stock')
@@ -20,14 +20,14 @@ class SortStockItemForm(FlaskForm):
     
     def sort(self, stockItems, sort_by, reverse):
         """
-        Sorts the provided list of transactions by what is defined in sort_by
+        Sorts the provided list of stock items by what is defined in sort_by
         Args:
-            transactions (list: Transaction): List to be sorted
+            transactions (list: StockItem): List to be sorted
             sort_by (str): What to sort the list by
             reverse (bool): Whether the sort should be reversed
 
         Returns:
-            list: Transaction: The sorted list
+            list: StockItem: The sorted list
         """
         try:
             if sort_by == 'name':
@@ -48,7 +48,7 @@ class SortStockItemForm(FlaskForm):
     
 class SortKitsForm(FlaskForm):
     """
-    Form for sorting the finances page.
+    Form for sorting kits.
     """
     name = SubmitField('Name')
     course = SubmitField('Course')
@@ -56,29 +56,29 @@ class SortKitsForm(FlaskForm):
     def __iter__(self):
         return iter([self.name, self.course])
     
-    def sort(self, kit, sort_by, reverse):
+    def sort(self, kits, sort_by, reverse):
         """
-        Sorts the provided list of transactions by what is defined in sort_by
+        Sorts the provided list of kits by what is defined in sort_by
         Args:
-            transactions (list: Transaction): List to be sorted
+            kits (list: Kit): List to be sorted
             sort_by (str): What to sort the list by
             reverse (bool): Whether the sort should be reversed
 
         Returns:
-            list: Transaction: The sorted list
+            list: Kit: The sorted list
         """
         try:
             if sort_by == 'name':
-                kit.sort(key=lambda x: x.name.lower(), reverse=reverse)
+                kits.sort(key=lambda x: x.name.lower(), reverse=reverse)
             elif sort_by == 'course':
-                kit.sort(key=lambda x: db_functions.get_course_with_id(x.course).name.lower(), reverse=reverse)
+                kits.sort(key=lambda x: db_functions.get_course_with_id(x.course).name.lower(), reverse=reverse)
         except:
             print("could not sort")
-        return kit   
+        return kits   
  
 class SortCoursesForm(FlaskForm):
     """
-    Form for sorting the finances page.
+    Form for sorting courses.
     """
     name = SubmitField('Name')
     
@@ -87,14 +87,14 @@ class SortCoursesForm(FlaskForm):
     
     def sort(self, courses, sort_by, reverse):
         """
-        Sorts the provided list of transactions by what is defined in sort_by
+        Sorts the provided list of courses by what is defined in sort_by
         Args:
-            transactions (list: Transaction): List to be sorted
+            transactions (list: Course): List to be sorted
             sort_by (str): What to sort the list by
             reverse (bool): Whether the sort should be reversed
 
         Returns:
-            list: Transaction: The sorted list
+            list: Course: The sorted list
         """
         try:
             if sort_by == 'name':
@@ -105,7 +105,7 @@ class SortCoursesForm(FlaskForm):
     
 class SortEventsForm(FlaskForm):
     """
-    Form for sorting the finances page.
+    Form for sorting events.
     """
     start = SubmitField('Start')
     end = SubmitField('End')
@@ -117,14 +117,14 @@ class SortEventsForm(FlaskForm):
     
     def sort(self, event, sort_by, reverse):
         """
-        Sorts the provided list of transactions by what is defined in sort_by
+        Sorts the provided list of events by what is defined in sort_by
         Args:
-            transactions (list: Transaction): List to be sorted
+            transactions (list: Event): List to be sorted
             sort_by (str): What to sort the list by
             reverse (bool): Whether the sort should be reversed
 
         Returns:
-            list: Transaction: The sorted list
+            list: Event: The sorted list
         """
         try:
             if sort_by == 'start':

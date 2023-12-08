@@ -9,8 +9,7 @@ import bcrypt
 
 class AddStockItemForm(FlaskForm):
     """
-    Superclass form for a generic transaction input.
-    Is used by Income() and Expense() sublcasses.
+    Form for adding a stock item to the database.
     """
     name = StringField('Name')
     stock = IntegerField('Stock')
@@ -26,9 +25,6 @@ class AddStockItemForm(FlaskForm):
     def add_to_database(self):
         """
         Creates and adds the new model to the database.
-        Args:
-            type (model.Transaction): What type of model is added to the database.
-            category (SelectField): What category the model should be.
         """
         # Create model
         si = model.StockItem()
@@ -44,8 +40,7 @@ class AddStockItemForm(FlaskForm):
             
 class AddCourseForm(FlaskForm):
     """
-    Superclass form for a generic transaction input.
-    Is used by Income() and Expense() sublcasses.
+    Form for adding a course to the database.
     """
     name = StringField('Name')
     
@@ -58,9 +53,6 @@ class AddCourseForm(FlaskForm):
     def add_to_database(self):
         """
         Creates and adds the new model to the database.
-        Args:
-            type (model.Transaction): What type of model is added to the database.
-            category (SelectField): What category the model should be.
         """
         # Create model
         c = model.Course()
@@ -73,8 +65,7 @@ class AddCourseForm(FlaskForm):
             
 class AddEventForm(FlaskForm):
     """
-    Superclass form for a generic transaction input.
-    Is used by Income() and Expense() sublcasses.
+    Form for adding an event to the database.
     """
     start = DateField('Start Date', validators=[DataRequired()])
     end = DateField('End Date', validators=[DataRequired()])
@@ -91,9 +82,6 @@ class AddEventForm(FlaskForm):
     def add_to_database(self, course_id):
         """
         Creates and adds the new model to the database.
-        Args:
-            type (model.Transaction): What type of model is added to the database.
-            category (SelectField): What category the model should be.
         """
         # Create model
         e = model.Event()
@@ -103,16 +91,14 @@ class AddEventForm(FlaskForm):
         
         c = get_course_with_id(course_id)
         c.events.append(e)
-        
-        # Commit model to database
+
         db.session.add(e)
         db.session.add(c)
         db.session.commit()
 
 class AddKitForm(FlaskForm):
     """
-    Superclass form for a generic transaction input.
-    Is used by Income() and Expense() sublcasses.
+    Form for adding a kit to the database.
     """
     name = StringField('Name')
     course = SubmitField('Select Course')
@@ -128,9 +114,6 @@ class AddKitForm(FlaskForm):
     def add_to_database(self, item_ids, course_id):
         """
         Creates and adds the new model to the database.
-        Args:
-            type (model.Transaction): What type of model is added to the database.
-            category (SelectField): What category the model should be.
         """
         # Create model
         k = model.Kit()
@@ -143,15 +126,14 @@ class AddKitForm(FlaskForm):
         c = get_course_with_id(course_id)
         c.kits.append(k)
         
-        print("adding to db:", items)
-        
-        # Commit model to database
-        #with app.app_context():
         db.session.add(k)
         db.session.add(c)
         db.session.commit()
         
 class LoginForm(FlaskForm):
+    """
+    Form for logging into the app.
+    """
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     
@@ -159,6 +141,9 @@ class LoginForm(FlaskForm):
         return iter([self.username, self.password])
     
 class AddUserForm(FlaskForm):
+    """
+    Form for adding a user to the database.
+    """
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     
@@ -166,6 +151,9 @@ class AddUserForm(FlaskForm):
         return iter([self.username, self.password])
     
     def add_to_database(self):
+        """
+        Creates and adds the new model to the database.
+        """
         u = model.User()
         u.username = self.username.data
         encode = self.password.data.encode('utf-8')

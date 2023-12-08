@@ -13,16 +13,17 @@ import datetime
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    
     if form.validate_on_submit():
         user = User.query.get(form.username.data)
-        print(form.username.data)
-        print(form.password.data)
-        print(user)
         if user:
+            
+            # Encrypt the password and check the encryption
             encode = form.password.data.encode('utf-8')
             if bcrypt.checkpw(encode, user.password):
+                
+                # Password is correct
                 user.authenticated = True
-                print("authenticated")
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
@@ -32,7 +33,6 @@ def login():
         else:
             flash("Username or password is incorrect")
             
-    
     return render_template('login.html',
                            form=form,
                            title="Login")
@@ -42,7 +42,8 @@ def add_user():
     form = AddUserForm()
     
     if form.validate_on_submit():
-        print("submit")
+        # Try except to catch if username is repeated
+        
         try:
             form.add_to_database()
             return redirect(url_for('login')) 
@@ -64,6 +65,7 @@ def add_user():
 # View models
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # When they first get to the website, redirect them to the login page
     return redirect(url_for('login'))
 
 @app.route('/view/<model_type>', methods=['GET', 'POST'])
@@ -80,6 +82,7 @@ def courses(model_type):
     except:
         sort_by = None
     
+    # Set sort and items depending on which model the page is for
     if model_type == 'stock':
         sort = SortStockItemForm()
         items = get_stock_items()
@@ -94,7 +97,6 @@ def courses(model_type):
         items = get_events()
     
     # Sort columns 
-    print(sort_by)
     for a in sort:
         if a.data:
             if a.name == sort_by:
@@ -106,7 +108,7 @@ def courses(model_type):
         print(sort.errors)
             
 
-    # Handle deleting of transactions
+    # Handle deleting + editing of transactions
     if request.method == 'POST':
         for i in items:
             if request.form.get(f'delete_{i.id}') == 'Delete':
@@ -118,7 +120,6 @@ def courses(model_type):
 
     items = sort.sort(items, sort_by, reverse)
 
-    
     return render_template('view_model.html',
                            allItems = items,
                            headers=sort,
@@ -133,7 +134,6 @@ def add_stock():
     form = AddStockItemForm()
     
     if form.validate_on_submit():
-        print("submit")
         form.add_to_database()
         return redirect('/view/stock') 
     else:
@@ -149,19 +149,20 @@ def add_stock():
 def add_kit():
     form = AddKitForm()
     
-    
     if form.validate_on_submit():
-        print("submit")
         # Save form data
         for field in form:
             session['kit'+field.name] = field.data
-            
+        
+        # Check if the submit button is pressed, or if the user is trying to select a kit/stock item    
         if form.items.data:
             return redirect(url_for('add_selected_stock_items'))
         elif form.course.data:
             return redirect('/add_selected_course/add_kit')
         else:
             form.add_to_database(session['selected_item_ids'], session['selected_course_id'])
+            
+            # Item has been added to the db, set the session tokens to empty
             session['selected_item_ids'] = []
             session['selected_course_id'] = None
             
@@ -170,7 +171,9 @@ def add_kit():
             return redirect('/view/kit') 
     else:
         print(form.errors)
-        
+    
+    # If user has left the page and returned, set the field values to 
+    # what the user had left them at    
     for field in form:
         try:
             field.data = session['kit'+field.name]
@@ -214,7 +217,8 @@ def add_event():
         for field in form:
             print(type(field.data))
             session['event'+field.name] = field.data
-
+        
+        # Check if the submit button is pressed, or if the user is trying to select a course
         if form.course.data:
             return redirect('/add_selected_course/add_event')
         else:
@@ -225,7 +229,9 @@ def add_event():
             return redirect('/view/event') 
     else:
         print(form.errors)
-
+    
+    # If user has left the page and returned, set the field values to 
+    # what the user had left them at   
     for field in form:
         try:
             if field.name == 'start' or field.name == 'end':

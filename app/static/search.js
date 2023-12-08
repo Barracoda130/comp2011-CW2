@@ -1,3 +1,5 @@
+// Function to live search through the table
+// Only uses the first element of each line as the search term
 jQuery(document).ready(function($) { 
     
     $('.items-table tr:not(:first-child)').each(function() { 
