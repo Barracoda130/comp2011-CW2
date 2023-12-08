@@ -1,0 +1,9 @@
+td, th {
+    border-top: 2px solid var(--secondary);
+    border-bottom: 2px solid var(--secondary);
+    height: 50px;
+    text-align: center;
+
+    padding-left: 20px;
+    padding-right: 20px;
+}

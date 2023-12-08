@@ -19,7 +19,10 @@ class StockItem(db.Model):
     
     def data(self):
         required = calculate_required(self)
-        return [self.name, self.stock, required, caluclate_diff(self, required), self.supplier, self.price]
+        return [self.name, self.stock, required, calculate_diff(self, required), self.supplier, self.price]
+    
+    def form_details(self):
+        return [self.name, self.stock, self.supplier, self.price]
     
     def headers(self):
         return ["name", "stock", "required", "diff", "supplier", "price"]
@@ -59,7 +62,7 @@ class Event(db.Model):
     
     def data(self):
         if self.course:
-            return [self.start, self.end, db_functions.get_course_with_id(self.course).name,  self.numberOfKids]
+            return [self.start.date(), self.end.date(), db_functions.get_course_with_id(self.course).name,  self.numberOfKids]
         return [self.start, self.end, None, self.numberOfKids]
     
     

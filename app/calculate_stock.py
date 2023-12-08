@@ -11,6 +11,6 @@ def calculate_required(item):
                 required += event.numberOfKids
     return required
 
-def caluclate_diff(item, required):
+def calculate_diff(item, required):
     return required - item.stock
     

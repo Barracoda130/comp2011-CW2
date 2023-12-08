@@ -58,7 +58,8 @@ def add_user():
     
     return render_template('add_model.html',
                            form=form,
-                           active_page='add_user')
+                           active_page='add_user',
+                           title="Add user")
 # ----------------------------------------------------------------
 # View models
 @app.route('/', methods=['GET', 'POST'])
@@ -134,7 +135,7 @@ def add_stock():
     if form.validate_on_submit():
         print("submit")
         form.add_to_database()
-        return redirect(url_for('index')) 
+        return redirect('/view/stock') 
     else:
         print(form.errors)
     
@@ -288,12 +289,16 @@ def add_selected_stock_items():
         return redirect(url_for('add_kit'))
         
     stock = sort.sort(stock, sort_by, reverse)       
-    print("selected", session['selected_item_ids'])
+    try:
+        already_selected = session['selected_item_ids']
+    except:
+        pass
+    
     return render_template('add_selected_items.html',
                            allItems = stock,
                            headers=sort,
                            form_type = form_type,
-                           already_selected = session['selected_item_ids'],
+                           already_selected = already_selected,
                            active_page='add')
 
 @app.route('/add_selected_course/<redirect_to>', methods=['GET', 'POST'])
@@ -336,14 +341,18 @@ def add_selected_course(redirect_to):
                 # Link all items with ID
                 session['selected_course_id'].append(int(id))
         return redirect(url_for(redirect_to))
+    
+    try:
+        already_selected = session['selected_course_id']
+    except:
+        already_selected = None
         
     courses = sort.sort(courses, sort_by, reverse)
-    print("selected", session['selected_course_id'])
     return render_template('add_selected_items.html',
                            allItems = courses,
                            headers=sort,
                            form_type = form_type,
-                           already_selected = session['selected_course_id'],
+                           already_selected = already_selected,
                            active_page='add')
 
 # ----------------------------------------------------------------
@@ -369,7 +378,7 @@ def edit_stock(model_type, id):
         print("submit")
         delete_from_db(model_type, id)
         form.add_to_database()
-        return redirect(url_for('index')) 
+        return redirect(f'/view/{model_type}') 
     else:
         print(form.errors)
         
@@ -387,7 +396,7 @@ def edit_stock(model_type, id):
             form.add_to_database(session['selected_item_ids'], session['selected_course_id'])
             session['selected_item_ids'] = []
             session['selected_course_id'] = None
-            return redirect('/view/kit') 
+            return redirect(f'/view/{model_type}') 
     else:
         print(form.errors)
         
@@ -399,7 +408,10 @@ def edit_stock(model_type, id):
     
     
     for i in range(len(form.fields())):
-        form.fields()[i].data = stock_item.data()[i]
+        if model_type == "stock":
+            form.fields()[i].data = stock_item.form_details()[i]
+        else:
+            form.fields()[i].data = stock_item.data()[i]
     
     return render_template('add_model.html',
                            form=form,

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <link href="{{ url_for('static', filename='index.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='view.css') }}" type="text/css" rel="stylesheet">
 
     <h1>Stock</h1>
     <input type="text" class="searchbox" placeholder="Search..."/>
     <table class="items-table">
         <tr>
-            <th>Add</th>
+            <th class="header">Add</th>
             <form action="" method="post" name="sort_model">
             {{ headers.csrf_token }}
             {% for header in headers %}
@@ -27,7 +27,7 @@
                     <td><input type="radio" value="{{ item.id }}" name="radio_input" {{ 'checked' if item.id==already_selected }}></td>
                 {% endif %}
             {% for column in item.data() %}
-                <td>{{ column }}</td>
+                <td class="text">{{ column }}</td>
             {% endfor %}
             </tr>
         {% endfor %}

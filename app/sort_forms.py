@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField
 from app import app, db
 import app.db_functions as db_functions
+import app.calculate_stock as calculate_stock
 
 class SortStockItemForm(FlaskForm):
     """
@@ -34,9 +35,9 @@ class SortStockItemForm(FlaskForm):
             elif sort_by == 'stock':
                 stockItems.sort(key=lambda x: x.stock, reverse=reverse)
             elif sort_by == 'required':
-                stockItems.sort(key=lambda x: x.required, reverse=reverse)
+                stockItems.sort(key=lambda x: calculate_stock.calculate_required(x), reverse=reverse)
             elif sort_by == 'diff':
-                stockItems.sort(key=lambda x: x.diff, reverse=reverse)
+                stockItems.sort(key=lambda x: calculate_stock.calculate_diff(x, calculate_stock.calculate_required(x)), reverse=reverse)
             elif sort_by == 'supplier':
                 stockItems.sort(key=lambda x: x.supplier.lower(), reverse=reverse)
             elif sort_by == 'price':
