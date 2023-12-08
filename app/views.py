@@ -235,12 +235,14 @@ def add_event():
     for field in form:
         try:
             if field.name == 'start' or field.name == 'end':
-                if field.data:
+                if session['event'+field.name]:
                     field.data = datetime.datetime.strptime(session['event'+field.name], '%a, %d %b %Y %H:%M:%S %Z').date()
             else:
                 field.data = session['event'+field.name]
         except:
             pass
+    
+        
         
 
     return render_template('add_model.html',
@@ -298,7 +300,7 @@ def add_selected_stock_items():
     try:
         already_selected = session['selected_item_ids']
     except:
-        pass
+        already_selected = []
     
     return render_template('add_selected_items.html',
                            allItems = stock,
@@ -351,7 +353,7 @@ def add_selected_course(redirect_to):
     try:
         already_selected = session['selected_course_id']
     except:
-        already_selected = None
+        already_selected = []
         
     courses = sort.sort(courses, sort_by, reverse)
     return render_template('add_selected_items.html',

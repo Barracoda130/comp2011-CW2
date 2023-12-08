@@ -20,7 +20,9 @@
             {% for column in item.data() %}
                 <td class="text">{{ column }}</td>
             {% endfor %}
-            <td><form method="post"><input class="edit" type=submit name="edit_{{ item.id }}" value="Edit">
+            {% if title == "stock" %}
+                <td><form method="post"><input class="edit" type=submit name="edit_{{ item.id }}" value="Edit">
+            {% endif %}
             <td><form method="post"><input class="delete" type=submit name="delete_{{ item.id }}" value="Delete">
             </tr>
         {% endfor %}

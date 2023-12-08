@@ -3,8 +3,13 @@
 jQuery(document).ready(function($) { 
     
     $('.items-table tr:not(:first-child)').each(function() { 
-        console.log($(this).children()[0].textContent);
-        $(this).attr('search-data', $(this).children()[0].textContent.toLowerCase()); 
+        if ($(this).children()[0].textContent == "")
+        {
+            $(this).attr('search-data', $(this).children()[1].textContent.toLowerCase()); 
+        } else {
+            $(this).attr('search-data', $(this).children()[0].textContent.toLowerCase()); 
+        }
+        
     }); 
         
     $('.searchbox').on('keyup', function() { 
